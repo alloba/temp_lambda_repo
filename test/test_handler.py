@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from src.handler import whatever_this_function_is_called, lambda_handler
+from src.handler import form_response, lambda_handler
 
 
 class TestHandler(unittest.TestCase):
@@ -34,5 +34,5 @@ class TestHandler(unittest.TestCase):
             lambda_handler({}, None)
 
     def test_whatever_this_function_is_called(self):
-        self.assertEqual(42, whatever_this_function_is_called())
+        self.assertEqual(42, form_response())
 
