@@ -19,11 +19,13 @@ def lambda_handler(event, context):
         if not activity_service_url:
             raise Exception(f'Missing runtime configuration - activity_service url')
 
-        if not event.get('uuid'):
+        document_uuid = event.get('uuid')
+        if not document_uuid:
             raise Exception('field "uuid" not provided in event')
 
-        attachment_data = process_uuid_attachments(event.get('uuid'), activity_service_url)
-        form_response(event.get('uuid'), attachment_data)
+        logger.info(f'beginning operation for uuid: {document_uuid}')
+        attachment_data = process_uuid_attachments(document_uuid, activity_service_url)
+        form_response(document_uuid, attachment_data)
 
     except Exception as e:
         logger.error(f'Operation Failed')
