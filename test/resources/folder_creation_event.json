@@ -1,0 +1,21 @@
+{
+  "data": [
+    {
+      "name": "name_insured",
+      "key": false
+    },
+    {
+      "name": "some_year",
+      "key": false
+    },
+    {
+      "name": "some_lob",
+      "key": false
+    },
+    {
+      "name": "some_submission_number_dill_one_time",
+      "key": true,
+      "sub_folders": ["Emails", "Policy Docs", "Underwriting Docs"]
+    }
+  ]
+}

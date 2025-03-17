@@ -1,0 +1,19 @@
+{
+  "created_at": "01/15/2025, 23:51:01",
+  "updated_at": "01/15/2025, 23:51:01",
+  "created_by_id": "87c02a31-18e6-471c-9e32-ea6db32c87b7",
+  "updated_by_id": "87c02a31-18e6-471c-9e32-ea6db32c87b7",
+  "uuid": "6e1ae5d1-32d2-4046-a3b8-1e6f75926c66",
+  "number": "ACT-2025-1326331",
+  "content_type_id": 96,
+  "object_id": "97a2e40d-40fd-4bae-a8f9-1102cf32a066",
+  "title": "Note to CN - does not appear to be another submission",
+  "document": null,
+  "private_document": "uploads/2025/01/15/FW__BOR_-_Submission__RN-2-1305670_Harman_Construction__LLC__Orchard_Street_LLC.msg",
+  "subcategory_choices_id": null,
+  "is_internal": false,
+  "metadata": {
+    "file_size": 396800,
+    "file_type": null
+  }
+}
