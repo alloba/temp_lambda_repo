@@ -5,6 +5,11 @@ import urllib3
 logger = logging.getLogger(__name__)
 http = urllib3.PoolManager()
 
+# TODO - The do they have a shared schema they want to work with, other than "here's an example json?"
+# TODO - are we supposed to be handling the infrastructure piece as well? that's a whole other thing. (CF/TF/Pulumi/???, IAM standards, CW logging standards, etc.)
+# TODO - while lambda destinations would work, i think it's probably not worth bothering with unless the team is already using them.
+#        it more directly forces an output format (which i'm sure they arent using), and becomes more difficult to test functionality directly (cannot test downstream effects via web console execution)
+#        i'll run it by andrew, but once the conversation is over i assume we'll just be boto-ing the sqs stuff. which isnt bad.
 def lambda_handler(event, context):
     source_bucket = os.environ.get('SOURCE_BUCKET')
     destination_bucket = os.environ.get('DESTINATION_BUCKET')
