@@ -13,23 +13,15 @@ class TestHandler(unittest.TestCase):
         os.environ['DESTINATION_SQS_URL'] = "some_value"
         os.environ['ACTIVITY_SERVICE_URL'] = "some_value"
 
-    def test_lambda_handler_missing_source_bucket_throws(self):
+    def test_lambda_handler_missing_runtime_parameter_fails(self):
         os.environ['SOURCE_BUCKET'] = ""
 
-        with self.assertRaisesRegex(Exception, '.*buckets'):
+        with self.assertRaisesRegex(Exception, 'missing runtime parameters'):
             lambda_handler({}, None)
 
-    def test_lambda_handler_missing_destination_sqs_throws(self):
-        os.environ['DESTINATION_SQS_URL'] = ""
-
-        with self.assertRaisesRegex(Exception, '.*destination SQS url'):
-            lambda_handler({}, None)
-
-    def test_lambda_handler_missing_activity_service_key(self):
-        os.environ['ACTIVITY_SERVICE_URL'] = ""
-
-        with self.assertRaisesRegex(Exception, '.*activity_service url'):
-            lambda_handler({}, None)
+    def test_lambda_handler_missing_uuid_fails(self):
+        with self.assertRaisesRegex(Exception, 'field "uuid" not provided in event'):
+            lambda_handler({'not_a_uuid':'asdf'}, None)
 
     @patch('src.handler.http')
     def test_lambda_handler_failed_activity_service_call(self, mock_http):

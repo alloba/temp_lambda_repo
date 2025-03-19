@@ -22,12 +22,8 @@ def lambda_handler(event, context):
     activity_service_url = os.environ.get('ACTIVITY_SERVICE_URL')
 
     try:
-        if not source_bucket or not destination_bucket:
-            raise Exception(f'Missing runtime configuration - source/destination buckets - [{str(source_bucket)} | {str(destination_bucket)}]')
-        if not destination_sqs:
-            raise Exception('Missing runtime configuration - destination SQS url')
-        if not activity_service_url:
-            raise Exception(f'Missing runtime configuration - activity_service url')
+        if not source_bucket or not destination_bucket or not destination_sqs or not activity_service_url:
+            raise Exception('missing runtime parameters')
 
         document_uuid = event.get('uuid')
         if not document_uuid:
