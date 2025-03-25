@@ -26,8 +26,8 @@ def lambda_handler(event, context):
             raise Exception('field "object_id" not provided in event')
 
         logger.info(f'beginning operation for uuid: {document_uuid}')
-        #TODO - i feel like we're supposed to process the incoming file itself, as well? yes/no?
-        #       not sure where you would want to copy it to though, in s3.
+        #TODO - i feel like we're supposed to process the incoming file itself, as well? yes/no? a 'process_file' function or something
+        #       but not sure on bucket path, and also how to call the api to get the initial data that the file upload event wants.
         process_uuid_attachments(document_uuid, activity_service_url, destination_bucket, destination_sqs)
 
     except Exception as e:
@@ -43,12 +43,17 @@ def process_uuid_attachments(uuid: str, activity_service_url: str, destination_b
     attachment_data = resp.json()
 
     for attachment_raw in attachment_data:
-        attachment = FileAttachment(**attachment_raw)
-        attachment_data_request = http.request(method='GET', url=attachment.privateAttachment)
+        attachment = FileAttachment(
+            uuid=uuid,
+            private_attachment=attachment_raw.get('privateAttachment'),
+            name=attachment_raw.get('name'),
+            filepath=attachment_raw.get('filePath')
+        )
+        attachment_data_request = http.request(method='GET', url=attachment.private_attachment)
         if attachment_data_request.status != 200:
             raise Exception(f'failed to download attachment for {uuid} : {attachment.name}')
 
-        s3.upload_fileobj(attachment_data_request.data, destination_bucket, attachment.filePath) #TODO - not sure if filepath is correct
+        s3.upload_fileobj(attachment_data_request.data, destination_bucket, attachment.filepath) #TODO - not sure if filepath is correct
 
         sqs_message = FileUploadEvent()
         #TODO - it feels like there should be more entries here, but i don't know what they are supposed to be.
@@ -59,7 +64,7 @@ def process_uuid_attachments(uuid: str, activity_service_url: str, destination_b
             "name": "files",
             "key": False,
             "files": [{
-                "s3_key": attachment.filePath,
+                "s3_key": attachment.filepath,
                 "display_name":attachment.name,
                 "s3_bucket": destination_bucket,
                 "document_type":"" #TODO - how would i know this.
